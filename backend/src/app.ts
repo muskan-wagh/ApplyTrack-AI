@@ -7,6 +7,7 @@ import { env } from './config/env.js';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler.js';
 import applicationsRouter from './routes/applications.js';
 import healthRouter from './routes/health.js';
+import matchRouter from './routes/match.js';
 import ragRouter from './routes/rag.js';
 import resumesRouter from './routes/resumes.js';
 
@@ -26,6 +27,7 @@ export function createApp() {
   app.use('/api/applications', applicationsRouter);
   app.use('/api/resumes', resumesRouter);
   app.use('/api/rag', ragRouter);
+  app.use('/api/match', matchRouter);
 
   app.use(notFoundHandler);
   app.use(errorHandler);

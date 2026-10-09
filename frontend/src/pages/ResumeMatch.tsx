@@ -140,8 +140,8 @@ export function ResumeMatchPage() {
             <div className="grid gap-1.5">
               <div className="flex items-center justify-between">
                 <Label htmlFor="resume-text">Your resume</Label>
-                <Badge variant="secondary" size="sm" className="font-mono text-[11px]">
-                  Backend pending
+                <Badge variant="success" size="sm" className="font-mono text-[11px]">
+                  AI powered
                 </Badge>
               </div>
               <Textarea
@@ -213,8 +213,7 @@ export function ResumeMatchPage() {
                 {(match.error as Error)?.message ?? 'The matching service could not be reached.'}
               </p>
               <p className="rounded-md border bg-muted px-3 py-2 font-mono text-xs text-muted-foreground">
-                POST /api/match — not implemented yet (backend Phase 5). No mock score is
-                shown until the real endpoint responds.
+                POST /api/match — { (match.error as Error)?.message ?? 'request failed' }
               </p>
               <Button variant="outline" size="sm" onClick={() => match.reset()}>
                 Dismiss

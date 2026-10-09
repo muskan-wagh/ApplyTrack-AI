@@ -27,9 +27,11 @@ npm run dev            # http://localhost:5000/api/health
   `{ answer, sources: [{ label, snippet }] }`. Answers are grounded in
   retrieved chunks only; when the resume holds no evidence the answer is
   exactly `I couldn't find that in the uploaded resume.` with `sources: []`.
-- Without `OPENROUTER_API_KEY`, RAG routes return `503`; everything else
-  keeps working. Job-description matching (`POST /api/match`) is intentionally
-  separate and still unimplemented.
+- Without `OPENROUTER_API_KEY`, RAG and match routes return `503`; everything else
+  keeps working.
+- `POST /api/match` — `{ resumeText, jobDescription }` (50–20000 chars each) →
+  `{ score, matchedSkills, missingSkills, explanation }`, scored by the
+  configured OpenRouter chat model from the two pasted texts only.
 
 ## Atlas Vector Search setup (manual, one-time)
 

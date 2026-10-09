@@ -23,9 +23,9 @@ export interface ApplicationList {
 }
 
 /**
- * Resume match (POST /api/match) is still a stub on the backend; the Match
- * page renders its "backend pending" state until then. Resume Q&A below is
- * live: upload/index via /api/resumes, chat via /api/rag/query.
+ * Resume match (POST /api/match) scores pasted resume text against a pasted
+ * job description. Resume Q&A is live: upload/index via /api/resumes, chat
+ * via /api/rag/query.
  */
 export interface MatchResult {
   score: number;
