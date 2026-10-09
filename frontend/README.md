@@ -15,14 +15,22 @@ npm run lint           # oxlint
 
 ## Routes
 
-- `/` — marketing landing page (honest copy, labeled sample-data preview)
+- `/` — landing page (`src/components/landing/*`): glass navbar with scroll-spy
+  + mobile menu, staggered hero with an illustrative resume→fit→evidence mockup,
+  overview split, three distinctly-treated features, timeline, tabbed product
+  preview (sample data, clearly labelled), FAQ accordion, final CTA + footer.
+  Motion is CSS-only (IntersectionObserver reveals, keyframed entrances) with a
+  global `prefers-reduced-motion` guard — no new animation dependencies.
 - `/app` — Overview: real stats, pipeline distribution, recent applications
 - `/app/applications` — searchable/filterable table + Add/Edit dialog
 - `/app/resume-match` — resume-vs-job form; result UI renders only from `POST /api/match`
-- `/app/resume-assistant` — chat UI; answers render only from `POST /api/rag/query`
+- `/app/resume-assistant` — PDF upload + chat UI; answers render only from
+  `POST /api/rag/query` with quoted evidence snippets
 
-The match/RAG backends (Phases 4–5) are not implemented yet, so those pages show a
-clear “Backend pending” state and surface the real connection error instead of mock data.
+The job-match backend (Phase 4) is not implemented yet, so that page shows a
+clear “Backend pending” state and surfaces the real connection error instead of mock data.
+Resume Q&A is live once `OPENROUTER_API_KEY` is set (see `backend/README.md`);
+without an uploaded resume the assistant shows an upload prompt and disables questions.
 
 ## Theming
 
@@ -48,11 +56,15 @@ Type: Inter for UI, JetBrains Mono for metrics/labels/code.
 
 - **UIArc Button** (`@uiarc/button`, vendored): installs cleanly and `motion` is
   compatible, but its styles depend on UIArc theme tokens and its `primary` is
-  monochrome — conflicting with this app’s indigo system. The shadcn `Button`
-  stays the single button system; Arc source remains vendored for re-evaluation.
-- **Space UI Avatar Extended** (MIT): adopted in the top bar via `ProfileAvatar`
+  monochrome — conflicting with this app’s indigo system. Re-evaluated for the
+  landing redesign: landing CTAs are plain navigation links with no async work,
+  so there is no loading/press-state use case. The shadcn `Button` stays the
+  single button system; Arc source remains vendored for re-evaluation.
+- **Space UI Avatar Extended** (MIT): adopted in the app top bar via `ProfileAvatar`
   (`AvatarExtended` + `AvatarRing` + `AvatarIndicator`). Offline-first initials
-  fallback instead of the external `avatars.spaceui.one` image API.
-- **Skecher Velocity Tabs**: docs are preview-only with no installable source, so the
-  status filter uses the accessible in-house `Tabs` (arrow-key/Home/End nav,
-  `role=tablist`). No competing tab system installed.
+  fallback instead of the external `avatars.spaceui.one` image API. Deliberately
+  not used on the landing page — no team/community exists to display.
+- **Skecher Velocity Tabs**: docs are preview-only with no installable source, so
+  the status filter and the landing preview switcher use the accessible in-house
+  `Tabs` (arrow-key/Home/End nav, `role=tablist`). Tabs are only used where they
+  switch real content — never decoration. No competing tab system installed.

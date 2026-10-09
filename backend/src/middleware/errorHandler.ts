@@ -1,4 +1,5 @@
 import type { NextFunction, Request, Response } from 'express';
+import { env } from '../config/env.js';
 
 export class AppError extends Error {
   statusCode: number;
@@ -34,6 +35,17 @@ export function errorHandler(err: unknown, _req: Request, res: Response, _next: 
   }
   if (err instanceof Error && err.name === 'ValidationError') {
     res.status(400).json({ ok: false, error: err.message });
+    return;
+  }
+  if (err instanceof Error && (err.name === 'MulterError' || err.name === 'MulterErrorExtended')) {
+    const code = (err as Error & { code?: string }).code;
+    if (code === 'LIMIT_FILE_SIZE') {
+      res
+        .status(400)
+        .json({ ok: false, error: `Resume file is too large (max ${env.MAX_RESUME_MB} MB)` });
+      return;
+    }
+    res.status(400).json({ ok: false, error: 'Invalid file upload' });
     return;
   }
   if (err instanceof Error && err.name === 'CastError') {

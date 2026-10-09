@@ -32,8 +32,8 @@ describe('chunkText', () => {
       expect(curr.length).toBeGreaterThan(0);
     }
     // Full coverage: every word of the input appears in at least one chunk.
-    const covered = new Set(chunks.flatMap((c) => c.text.split(/\s+/)));
-    for (const word of text.split(/\s+/)) {
+    const covered = new Set(chunks.flatMap((c) => c.text.split(/\s+/)).filter(Boolean));
+    for (const word of text.split(/\s+/).filter(Boolean)) {
       expect(covered.has(word)).toBe(true);
     }
   });

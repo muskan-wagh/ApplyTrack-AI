@@ -23,10 +23,9 @@ export interface ApplicationList {
 }
 
 /**
- * Contracts for backend Phases 4–5 (not implemented yet).
- * The Resume pages call these and render loading / error / result states;
- * until the endpoints exist the UI surfaces a clear "backend pending" error
- * instead of mock data.
+ * Resume match (POST /api/match) is still a stub on the backend; the Match
+ * page renders its "backend pending" state until then. Resume Q&A below is
+ * live: upload/index via /api/resumes, chat via /api/rag/query.
  */
 export interface MatchResult {
   score: number;
@@ -43,6 +42,14 @@ export interface AssistantSource {
 export interface AssistantAnswer {
   answer: string;
   sources: AssistantSource[];
+}
+
+export interface ResumeMeta {
+  id: string;
+  filename: string;
+  chunkCount: number;
+  charCount: number;
+  uploadedAt: string;
 }
 
 export const api = {
@@ -112,6 +119,29 @@ export const api = {
     });
     const body = await parseBody(res);
     return body.data as AssistantAnswer;
+  },
+
+  async getCurrentResume(): Promise<ResumeMeta | null> {
+    const res = await fetch(`${BASE}/resumes/current`);
+    const body = await parseBody(res);
+    return body.data as ResumeMeta | null;
+  },
+
+  async uploadResume(file: File): Promise<ResumeMeta & { resumeId: string }> {
+    const form = new FormData();
+    form.append('file', file, file.name);
+    const res = await fetch(`${BASE}/resumes/upload`, { method: 'POST', body: form });
+    // Upload errors use the same {ok:false,error} envelope.
+    const body = (await res.json().catch(() => null)) as {
+      ok: boolean;
+      data?: unknown;
+      error?: string;
+    } | null;
+    if (!res.ok || !body?.ok) {
+      throw new Error(body?.error ?? `Upload failed (${res.status})`);
+    }
+    const data = body.data as { resumeId: string; filename: string; chunkCount: number; charCount: number };
+    return { id: data.resumeId, uploadedAt: new Date().toISOString(), ...data };
   },
 };
 
