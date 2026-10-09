@@ -58,7 +58,7 @@ export function Overview() {
               <li key={s.name}>
                 <Link
                   to={s.to}
-                  className="group flex items-start gap-3.5 rounded-lg p-5 outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  className="group flex items-start gap-3.5 rounded-lg p-5 outline-none transition-colors duration-150 hover:bg-accent/50 focus-visible:ring-2 focus-visible:ring-ring"
                 >
                   <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md border bg-muted transition-colors group-hover:border-primary/40">
                     <s.icon className="h-4 w-4 text-foreground" aria-hidden />

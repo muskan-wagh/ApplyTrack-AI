@@ -103,13 +103,13 @@ export function Hero() {
           className="animate-enter mt-7 flex flex-wrap items-center justify-center gap-2"
           style={{ animationDelay: '270ms' }}
         >
-          <Button size="lg" asChild>
+          <Button size="lg" asChild className="transition-transform active:scale-[0.98]">
             <Link to="/app">
               Open the dashboard
               <ArrowRight className="h-4 w-4" aria-hidden />
             </Link>
           </Button>
-          <Button size="lg" variant="outline" asChild>
+          <Button size="lg" variant="outline" asChild className="transition-transform active:scale-[0.98]">
             <a href="#how">See how it works</a>
           </Button>
         </div>
@@ -120,7 +120,7 @@ export function Hero() {
           No account needed · Your records live in your own MongoDB
         </p>
       </div>
-      <div className="animate-enter mx-auto mt-10 max-w-4xl" style={{ animationDelay: '420ms' }}>
+      <div className="animate-enter-preview mx-auto mt-10 max-w-4xl" style={{ animationDelay: '420ms' }}>
         <FlowMockup />
         <p className="mt-2 text-center text-xs text-muted-foreground">
           Illustrative preview with sample content — the dashboard shows your live records.

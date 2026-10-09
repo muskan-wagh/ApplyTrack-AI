@@ -151,6 +151,11 @@ div {
   transition-timing-function: ease;
 }
 
+/* Smooth anchor navigation for landing links (navbar, hero, footer). */
+html {
+  scroll-behavior: smooth;
+}
+
 /* Anchor sections sit below the fixed navbar. */
 section[id] {
   scroll-margin-top: 4.5rem;
@@ -170,6 +175,40 @@ section[id] {
 
 .animate-enter {
   animation: landing-enter 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Hero product preview: same rise as text plus a whisper of scale, so the
+   dashboard mockup settles in with a sense of depth. Runs once on load. */
+@keyframes landing-enter-preview {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-enter-preview {
+  animation: landing-enter-preview 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Preview tab switching: brief fade + small rise so the new panel arrives
+   instead of flashing in. Re-triggered by React `key` on tab change. */
+@keyframes landing-tab-panel {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.tab-panel-enter {
+  animation: landing-tab-panel 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 /* Reveal-on-scroll: gentle rise, triggered once by IntersectionObserver. */
@@ -233,6 +272,9 @@ section[id] {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
   *,
   *::before,
   *::after {
@@ -243,7 +285,10 @@ section[id] {
     opacity: 1;
     transform: none;
   }
-  .animate-enter {
+  .animate-enter,
+  .animate-enter-preview,
+  .tab-panel-enter,
+  .flow-bar {
     animation: none;
   }
 }

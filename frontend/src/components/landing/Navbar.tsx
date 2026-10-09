@@ -62,7 +62,7 @@ export function Navbar() {
   return (
     <header
       className={cn(
-        'fixed inset-x-0 top-0 z-30 border-b bg-background/70 backdrop-blur-md',
+        'fixed inset-x-0 top-0 z-30 border-b bg-background/70 backdrop-blur-md transition-[box-shadow,background-color,border-color] duration-200',
         scrolled ? 'border-border shadow-[0_1px_12px_rgb(0_0_0/0.06)]' : 'border-transparent'
       )}
     >
@@ -77,7 +77,7 @@ export function Navbar() {
               href={l.href}
               aria-current={active === l.id ? 'true' : undefined}
               className={cn(
-                'relative rounded-md px-3 py-1.5 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring',
+                'relative rounded-md px-3 py-1.5 text-sm outline-none transition-colors duration-150 focus-visible:ring-2 focus-visible:ring-ring',
                 active === l.id ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'
               )}
             >

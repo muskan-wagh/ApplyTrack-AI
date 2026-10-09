@@ -46,9 +46,12 @@ export function ProductPreview() {
                 Sample data
               </Badge>
             </div>
-            {tab === 'applications' && <ApplicationsSample />}
-            {tab === 'match' && <MatchSample />}
-            {tab === 'assistant' && <AssistantSample />}
+            {/* Keyed wrapper replays a short fade/rise each time the tab changes. */}
+            <div key={tab} className="tab-panel-enter">
+              {tab === 'applications' && <ApplicationsSample />}
+              {tab === 'match' && <MatchSample />}
+              {tab === 'assistant' && <AssistantSample />}
+            </div>
           </div>
           <p className="mt-2 text-center text-xs text-muted-foreground">
             Your dashboard shows live records from the API —{' '}
