@@ -194,14 +194,14 @@ export function OverviewPage() {
           </CardHeader>
           <CardContent className="space-y-4">
             <div
-              className="flex h-2.5 w-full overflow-hidden rounded-full bg-muted"
+              className="flex h-3 w-full gap-1"
               role="img"
               aria-label={`Status distribution across ${s.total} applications`}
             >
               {activeStages.map((k) => (
                 <span
                   key={k}
-                  className={BAR_CLASS[k]}
+                  className={`rounded-full ${BAR_CLASS[k]}`}
                   style={{ width: `${((s.byStatus[k] ?? 0) / s.total) * 100}%` }}
                 />
               ))}
@@ -274,10 +274,10 @@ export function OverviewPage() {
       </div>
 
       {resume.data == null && !resume.isPending && !resume.isError && (
-        <Card>
+        <Card className="border-primary/25 bg-primary/[0.05]">
           <CardContent className="flex flex-wrap items-center gap-3 pt-5">
-            <span className="flex h-9 w-9 items-center justify-center rounded-lg border bg-muted">
-              <FileUp className="h-4 w-4 text-muted-foreground" aria-hidden />
+            <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
+              <FileUp className="h-4 w-4" aria-hidden />
             </span>
             <div className="min-w-0 flex-1">
               <p className="text-sm font-semibold text-foreground">Unlock AI matching</p>

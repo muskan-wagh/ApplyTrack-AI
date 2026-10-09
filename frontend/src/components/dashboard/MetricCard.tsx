@@ -11,7 +11,16 @@ const TONE_CHIP: Record<string, string> = {
   info: 'bg-info text-info-foreground',
 };
 
-/** Balanced metric card: icon chip, mono value, small supporting label. Real values only. */
+const TONE_BAR: Record<string, string> = {
+  default: 'bg-muted-foreground/40',
+  plum: 'bg-primary',
+  success: 'bg-success-solid',
+  warning: 'bg-warning-foreground',
+  danger: 'bg-destructive',
+  info: 'bg-info-foreground',
+};
+
+/** Editorial metric: icon + label up top, oversized mono value, tone rule. */
 export function MetricCard({
   icon: Icon,
   label,
@@ -26,26 +35,29 @@ export function MetricCard({
   tone?: keyof typeof TONE_CHIP | string;
 }) {
   return (
-    <Card className="card-interactive">
-      <CardContent className="flex items-start justify-between gap-3 pt-5">
-        <div className="min-w-0">
-          <p className="truncate text-[13px] font-medium text-muted-foreground">{label}</p>
-          <p className="metric-value mt-1.5 text-[28px] font-semibold leading-none text-foreground">
-            {value}
-          </p>
-          {hint && (
-            <p className="mt-2 font-mono text-[11px] leading-tight text-muted-foreground">{hint}</p>
-          )}
+    <Card className="card-interactive overflow-hidden">
+      <CardContent className="pt-4">
+        <div className="flex items-center gap-2.5">
+          <span
+            className={cn(
+              'flex h-8 w-8 shrink-0 items-center justify-center rounded-lg',
+              TONE_CHIP[tone] ?? TONE_CHIP.default
+            )}
+            aria-hidden
+          >
+            <Icon className="h-4 w-4" />
+          </span>
+          <p className="min-w-0 truncate text-[13px] font-medium text-muted-foreground">{label}</p>
         </div>
-        <span
-          className={cn(
-            'flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border',
-            TONE_CHIP[tone] ?? TONE_CHIP.default
-          )}
-          aria-hidden
-        >
-          <Icon className="h-4 w-4" />
-        </span>
+        <p className="metric-value mt-3 text-4xl font-semibold leading-none tracking-tight text-foreground">
+          {value}
+        </p>
+        {hint && (
+          <p className="mt-2 truncate font-mono text-[11px] text-muted-foreground">{hint}</p>
+        )}
+        <div className="mt-3 h-1 overflow-hidden rounded-full bg-muted" aria-hidden>
+          <div className={cn('h-full w-2/3 rounded-full', TONE_BAR[tone] ?? TONE_BAR.default)} />
+        </div>
       </CardContent>
     </Card>
   );

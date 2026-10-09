@@ -16,19 +16,23 @@ npm run lint           # oxlint
 ## Routes
 
 - `/` — landing page (`src/components/landing/*`): glass navbar with scroll-spy
-  + mobile menu, staggered hero with an illustrative resume→fit→evidence mockup,
-  overview split, three distinctly-treated features, timeline, tabbed product
-  preview (sample data, clearly labelled), FAQ accordion, final CTA + footer.
-  Motion is CSS-only (IntersectionObserver reveals, keyframed entrances) with a
-  global `prefers-reduced-motion` guard — no new animation dependencies.
-- `/app` — Overview: real stats, pipeline distribution, recent applications
+  + mobile menu, choreographed hero (masked headline reveals with a
+  click-to-rotate angle, layered Resume Match frame that animates
+  document → score → skills → evidence), endpoint ticker, sticky workflow,
+  tabbed product preview (sample data, clearly labelled), asymmetric features,
+  scroll-drawn how-it-works rail, FAQ accordion, final CTA + footer.
+  Entrances are CSS keyframes; `motion` (already a dependency) drives only the
+  background parallax — with a global `prefers-reduced-motion` guard throughout.
+- `/app` — Overview: real stats, segmented pipeline distribution, recent applications
 - `/app/applications` — searchable/filterable table + Add/Edit dialog
-- `/app/resume-match` — resume-vs-job form; result UI renders only from `POST /api/match`
+- `/app/resume-match` — resume-vs-job workbench; score ring, skill overlap and
+  explanation render only from `POST /api/match` (live)
 - `/app/resume-assistant` — PDF upload + chat UI; answers render only from
   `POST /api/rag/query` with quoted evidence snippets
 
-The job-match backend (Phase 4) is not implemented yet, so that page shows a
-clear “Backend pending” state and surfaces the real connection error instead of mock data.
+Resume matching is implemented (`backend/src/routes/match.ts`, OpenRouter-backed):
+the page shows a pending state while analyzing and surfaces the real connection
+or provider error instead of mock data — a failed call is never shown as a weak fit.
 Resume Q&A is live once `OPENROUTER_API_KEY` is set (see `backend/README.md`);
 without an uploaded resume the assistant shows an upload prompt and disables questions.
 
@@ -39,6 +43,9 @@ Light + dark via a `.dark` class on `<html>`, persisted in
 `index.html` applies the stored theme before first paint (no flash); the Sun/Moon
 toggle lives in the site nav and the app top bar. Tokens are semantic CSS variables
 (`--background`, `--card`, `--primary`, …) with full dark overrides in `src/index.css`.
+Identity: warm paper + warm ink with an ember accent (light) / paper-on-ink (dark);
+green is reserved for fit/offer signal only. No gradients anywhere — depth comes
+from solid surfaces, hairlines, and shadow.
 Type: Inter for UI, JetBrains Mono for metrics/labels/code.
 
 ## Structure
@@ -49,14 +56,14 @@ Type: Inter for UI, JetBrains Mono for metrics/labels/code.
 - `src/components/arc/` — vendored UIArc Button source (evaluated, not default)
 - `src/components/layout/AppShell.tsx` — sidebar, top bar, mobile drawer
 - `src/pages/` — Landing, Overview, Applications, ResumeMatch, ResumeAssistant
-- `src/lib/api.ts` — backend client (`VITE_API_URL`), incl. pending match/RAG contracts
+- `src/lib/api.ts` — backend client (`VITE_API_URL`), incl. match (`MatchResult`) and RAG contracts
 - `src/lib/theme.tsx` — ThemeProvider + useTheme
 
 ## Third-party component decisions
 
 - **UIArc Button** (`@uiarc/button`, vendored): installs cleanly and `motion` is
   compatible, but its styles depend on UIArc theme tokens and its `primary` is
-  monochrome — conflicting with this app’s indigo system. Re-evaluated for the
+   monochrome — conflicting with this app’s warm ember system. Re-evaluated for the
   landing redesign: landing CTAs are plain navigation links with no async work,
   so there is no loading/press-state use case. The shadcn `Button` stays the
   single button system; Arc source remains vendored for re-evaluation.

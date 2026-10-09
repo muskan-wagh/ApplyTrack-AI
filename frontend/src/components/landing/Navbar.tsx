@@ -62,9 +62,10 @@ export function Navbar() {
   return (
     <header
       className={cn(
-        'fixed inset-x-0 top-0 z-30 border-b bg-background/70 backdrop-blur-md transition-[box-shadow,background-color,border-color] duration-200',
+        'lm lm-nav fixed inset-x-0 top-0 z-30 border-b bg-background/70 backdrop-blur-md transition-[box-shadow,background-color,border-color] duration-200',
         scrolled ? 'border-border shadow-[0_1px_12px_rgb(0_0_0/0.06)]' : 'border-transparent'
       )}
+      style={{ ['--d' as string]: '60ms' }}
     >
       <div className="mx-auto flex h-14 max-w-6xl items-center gap-2 px-4 sm:px-6">
         <Link to="/" aria-label="ApplyTrack AI home" onClick={() => setOpen(false)}>

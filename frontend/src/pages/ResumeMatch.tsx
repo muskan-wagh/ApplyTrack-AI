@@ -14,34 +14,58 @@ import { cn } from '@/lib/utils';
 
 function ScoreMeter({ score }: { score: number }) {
   const clamped = Math.max(0, Math.min(100, Math.round(score)));
-  const tone =
-    clamped >= 70 ? 'bg-success-solid' : clamped >= 40 ? 'bg-warning-foreground' : 'bg-destructive';
+  const stroke =
+    clamped >= 70
+      ? 'var(--success-solid)'
+      : clamped >= 40
+        ? 'var(--warning-foreground)'
+        : 'var(--destructive)';
   const verdict = clamped >= 70 ? 'Strong fit' : clamped >= 40 ? 'Partial fit' : 'Weak fit';
+  const R = 34;
+  const C = 2 * Math.PI * R;
   return (
-    <div className="flex items-center gap-4">
-      <div>
-        <p
-          className="font-mono text-4xl font-semibold leading-none text-foreground"
-          aria-label={`Match score ${clamped} out of 100`}
-        >
-          {clamped}
-          <span className="text-base font-normal text-muted-foreground">/100</span>
-        </p>
-        <p className="mt-1 font-mono text-[11px] uppercase tracking-wide text-muted-foreground">
-          {verdict}
-        </p>
+    <div className="flex items-center gap-5">
+      <div className="relative h-24 w-24 shrink-0" role="img" aria-label={`Match score ${clamped} out of 100, ${verdict}`}>
+        <svg viewBox="0 0 80 80" className="h-24 w-24 -rotate-90" aria-hidden>
+          <circle cx="40" cy="40" r={R} fill="none" strokeWidth="8" style={{ stroke: 'var(--border)' }} />
+          <circle
+            cx="40"
+            cy="40"
+            r={R}
+            fill="none"
+            strokeWidth="8"
+            strokeLinecap="round"
+            strokeDasharray={C}
+            strokeDashoffset={C - (clamped / 100) * C}
+            style={{ stroke, transition: 'stroke-dashoffset 1s cubic-bezier(0.22, 1, 0.36, 1)' }}
+          />
+        </svg>
+        <div className="absolute inset-0 flex flex-col items-center justify-center">
+          <span className="font-mono text-2xl font-semibold leading-none text-foreground">{clamped}</span>
+          <span className="font-mono text-[10px] text-muted-foreground">/100</span>
+        </div>
       </div>
-      <div className="flex-1">
+      <div className="min-w-0">
+        <Badge
+          variant={clamped >= 70 ? 'success' : clamped >= 40 ? 'warning' : 'destructive'}
+          size="sm"
+          className="font-mono text-[11px]"
+        >
+          {verdict}
+        </Badge>
         <div
-          className="h-2 overflow-hidden rounded-full bg-muted"
+          className="mt-3 h-2 overflow-hidden rounded-full bg-muted"
           role="progressbar"
           aria-valuenow={clamped}
           aria-valuemin={0}
           aria-valuemax={100}
           aria-label="Resume match score"
         >
-          <div className={cn('h-full rounded-full', tone)} style={{ width: `${clamped}%` }} />
+          <div className="h-full rounded-full" style={{ width: `${clamped}%`, background: stroke }} />
         </div>
+        <p className="mt-2 font-mono text-[11px] text-muted-foreground">
+          Grounded in the two texts you pasted
+        </p>
       </div>
     </div>
   );
@@ -88,8 +112,13 @@ function MatchResultView({ result }: { result: MatchResult }) {
   return (
     <Card>
       <CardHeader className="pb-1">
-        <p className="eyebrow">Real analysis · POST /api/match</p>
-        <CardTitle className="text-[15px]">Match result</CardTitle>
+        <div className="flex items-center justify-between gap-2">
+          <p className="eyebrow">Real analysis · POST /api/match</p>
+          <Badge variant="success" size="sm" className="font-mono text-[11px]">
+            Live
+          </Badge>
+        </div>
+        <CardTitle className="mt-1 text-[15px]">Match result</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         <ScoreMeter score={result.score} />
@@ -167,6 +196,7 @@ export function ResumeMatchPage() {
       <div className="grid items-start gap-4 lg:grid-cols-2">
         <Card>
           <CardHeader className="pb-1">
+            <p className="eyebrow">Workbench · 3 steps</p>
             <CardTitle className="flex items-center gap-2 text-[15px]">
               <FileSearch className="h-4 w-4 text-muted-foreground" aria-hidden />
               Analysis input
@@ -213,7 +243,10 @@ export function ResumeMatchPage() {
             <form onSubmit={submit} className="grid gap-4">
               <div className="grid gap-1.5">
                 <div className="flex items-baseline justify-between gap-2">
-                  <Label htmlFor="resume-text">Your resume</Label>
+                  <Label htmlFor="resume-text">
+                    <span className="mr-1.5 font-mono text-[11px] font-semibold text-primary">01</span>
+                    Your resume
+                  </Label>
                   <span className="font-mono text-[11px] text-muted-foreground" aria-live="polite">
                     {resumeLen}/50 min
                   </span>
@@ -232,7 +265,10 @@ export function ResumeMatchPage() {
               </div>
               <div className="grid gap-1.5">
                 <div className="flex items-baseline justify-between gap-2">
-                  <Label htmlFor="job-description">Job description</Label>
+                  <Label htmlFor="job-description">
+                    <span className="mr-1.5 font-mono text-[11px] font-semibold text-primary">02</span>
+                    Job description
+                  </Label>
                   <span className="font-mono text-[11px] text-muted-foreground" aria-live="polite">
                     {jdLen}/50 min
                   </span>

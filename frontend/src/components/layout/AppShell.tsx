@@ -64,8 +64,8 @@ export function AppShell({ onSearch }: { onSearch: (q: string) => void }) {
             cn(
               'group relative flex items-center gap-2.5 rounded-lg px-3 py-2 text-[13px] font-medium outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring',
               isActive
-                ? 'bg-secondary font-semibold text-foreground'
-                : 'text-muted-foreground hover:bg-accent hover:text-foreground'
+                ? 'bg-white/10 font-semibold text-white'
+                : 'text-white/55 hover:bg-white/5 hover:text-white'
             )
           }
         >
@@ -73,7 +73,7 @@ export function AppShell({ onSearch }: { onSearch: (q: string) => void }) {
             <>
               <span
                 className={cn(
-                  'absolute left-0 top-1/2 h-5 w-1 -translate-y-1/2 rounded-full bg-primary transition-opacity',
+                  'absolute left-0 top-1/2 h-5 w-1 -translate-y-1/2 rounded-full bg-[#e89b4c] transition-opacity',
                   isActive ? 'opacity-100' : 'opacity-0'
                 )}
                 aria-hidden
@@ -81,7 +81,7 @@ export function AppShell({ onSearch }: { onSearch: (q: string) => void }) {
               <item.icon
                 className={cn(
                   'h-4 w-4 shrink-0',
-                  isActive ? 'text-foreground' : 'text-muted-foreground group-hover:text-foreground'
+                  isActive ? 'text-white' : 'text-white/45 group-hover:text-white'
                 )}
                 aria-hidden
               />
@@ -95,31 +95,31 @@ export function AppShell({ onSearch }: { onSearch: (q: string) => void }) {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Desktop sidebar */}
-      <aside className="fixed inset-y-0 left-0 hidden w-60 flex-col border-r bg-card md:flex">
-        <div className="border-b px-4 py-4">
+      {/* Desktop sidebar: deep ink panel, ember active rail. */}
+      <aside className="fixed inset-y-0 left-0 hidden w-60 flex-col bg-[#1f1710] dark:bg-[#0e0b07] md:flex">
+        <div className="border-b border-white/10 px-4 py-4">
           <Link to="/" aria-label="ApplyTrack AI home" className="rounded-md outline-none focus-visible:ring-2 focus-visible:ring-ring">
-            <Logo />
+            <Logo tone="inverse" />
           </Link>
-          <p className="mt-1.5 font-mono text-[11px] text-muted-foreground">
+          <p className="mt-1.5 font-mono text-[11px] text-white/45">
             Job pipeline · AI career tools
           </p>
         </div>
         <div className="flex-1 overflow-y-auto px-3 py-4">
-          <p className="eyebrow px-3 pb-2">Workspace</p>
+          <p className="px-3 pb-2 font-mono text-[11px] font-medium uppercase tracking-[0.08em] text-white/35">Workspace</p>
           {nav}
         </div>
-        <div className="space-y-1 border-t p-3">
-          <div className="flex items-center gap-2.5 rounded-lg border bg-muted px-3 py-2.5">
+        <div className="space-y-1 border-t border-white/10 p-3">
+          <div className="flex items-center gap-2.5 rounded-lg border border-white/10 bg-white/5 px-3 py-2.5">
             <ProfileAvatar initials="AT" />
             <div className="min-w-0">
-              <p className="truncate text-[13px] font-medium text-foreground">Personal</p>
-              <p className="font-mono text-[11px] text-muted-foreground">single-user · v1</p>
+              <p className="truncate text-[13px] font-medium text-white">Personal</p>
+              <p className="font-mono text-[11px] text-white/45">single-user · v1</p>
             </div>
           </div>
           <Link
             to="/"
-            className="flex items-center gap-2 rounded-lg px-3 py-2 text-[13px] font-medium text-muted-foreground outline-none transition-colors hover:bg-accent hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
+            className="flex items-center gap-2 rounded-lg px-3 py-2 text-[13px] font-medium text-white/55 outline-none transition-colors hover:bg-white/5 hover:text-white focus-visible:ring-2 focus-visible:ring-ring"
           >
             <ArrowLeft className="h-4 w-4" aria-hidden />
             Back to site
@@ -135,31 +135,32 @@ export function AppShell({ onSearch }: { onSearch: (q: string) => void }) {
             onClick={() => setMobileOpen(false)}
             aria-hidden
           />
-          <div className="absolute inset-y-0 left-0 flex w-72 flex-col border-r bg-card shadow-lg">
-            <div className="flex items-center justify-between border-b p-4">
-              <Logo />
+          <div className="absolute inset-y-0 left-0 flex w-72 flex-col bg-[#1f1710] shadow-lg dark:bg-[#0e0b07]">
+            <div className="flex items-center justify-between border-b border-white/10 p-4">
+              <Logo tone="inverse" />
               <Button
                 variant="ghost"
                 size="icon"
                 aria-label="Close navigation"
                 onClick={() => setMobileOpen(false)}
+                className="text-white/70 hover:bg-white/10 hover:text-white"
               >
                 <X className="h-4 w-4" />
               </Button>
             </div>
             <div className="flex-1 overflow-y-auto px-3 py-4">
-              <p className="eyebrow px-3 pb-2">Workspace</p>
+              <p className="px-3 pb-2 font-mono text-[11px] font-medium uppercase tracking-[0.08em] text-white/35">Workspace</p>
               {nav}
-              <Button onClick={openAdd} className="mt-4 w-full" size="sm">
+              <Button onClick={openAdd} className="mt-4 w-full border-0 bg-[#f7f1e3] text-[#241a10] hover:bg-white" size="sm">
                 <Plus className="h-4 w-4" aria-hidden />
                 Add application
               </Button>
             </div>
-            <div className="border-t p-3">
+            <div className="border-t border-white/10 p-3">
               <Link
                 to="/"
                 onClick={() => setMobileOpen(false)}
-                className="flex items-center gap-2 rounded-lg px-3 py-2 text-[13px] font-medium text-muted-foreground hover:bg-accent hover:text-foreground"
+                className="flex items-center gap-2 rounded-lg px-3 py-2 text-[13px] font-medium text-white/55 hover:bg-white/5 hover:text-white"
               >
                 <ArrowLeft className="h-4 w-4" aria-hidden />
                 Back to site

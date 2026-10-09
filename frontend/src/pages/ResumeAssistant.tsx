@@ -308,8 +308,8 @@ export function ResumeAssistantPage() {
         </div>
 
         {/* Conversation */}
-        <Card className="flex min-h-[480px] flex-col lg:col-span-2">
-          <CardHeader className="flex flex-row items-center justify-between border-b py-3.5">
+        <Card className="flex min-h-[480px] flex-col overflow-hidden lg:col-span-2">
+          <CardHeader className="flex flex-row items-center justify-between border-b bg-muted/50 py-3.5">
             <CardTitle className="text-[15px]">Conversation</CardTitle>
             <Badge variant="secondary" size="sm" className="font-mono text-[11px]">
               Grounded · session only
@@ -330,10 +330,10 @@ export function ResumeAssistantPage() {
                   </span>
                   <div
                     className={cn(
-                      'max-w-[85%] rounded-lg border px-3.5 py-2.5 text-sm leading-relaxed sm:max-w-[80%]',
+                      'max-w-[85%] rounded-2xl border px-3.5 py-2.5 text-sm leading-relaxed sm:max-w-[80%]',
                       m.role === 'user'
-                        ? 'bg-primary text-primary-foreground'
-                        : 'bg-card text-foreground'
+                        ? 'rounded-br-sm border-transparent bg-primary text-primary-foreground shadow-sm'
+                        : 'rounded-bl-sm bg-muted/70 text-foreground'
                     )}
                   >
                     {m.error ? (

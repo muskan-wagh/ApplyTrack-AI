@@ -44,69 +44,69 @@
 
 :root {
   color-scheme: light;
-  --background: #f7f5fc;
-  --foreground: #09070f;
-  --card: #ffffff;
-  --card-foreground: #09070f;
-  --popover: #ffffff;
-  --popover-foreground: #09070f;
-  --muted: #ede8f7;
-  --muted-foreground: #5f5b76;
-  --border: #e4def2;
-  --input: #ddd7ee;
-  --ring: #291451;
-  --primary: #291451;
-  --primary-foreground: #ffffff;
-  --secondary: #ede8f7;
-  --secondary-foreground: #291451;
-  --accent: #ede8f7;
-  --accent-foreground: #09070f;
-  --destructive: #c81e1e;
-  --destructive-foreground: #ffffff;
-  --error: #fdecec;
-  --error-foreground: #8a1f1f;
-  --info: #e3ecfd;
-  --info-foreground: #1e3f8f;
-  --success: #dbf7e3;
-  --success-foreground: #0a6b2a;
-  --success-solid: #12b76a;
-  --brand-green: #1fe865;
-  --warning: #fef0d5;
-  --warning-foreground: #7a4b00;
+  --background: #faf6ee;
+  --foreground: #1c1611;
+  --card: #fffdf8;
+  --card-foreground: #1c1611;
+  --popover: #fffdf8;
+  --popover-foreground: #1c1611;
+  --muted: #f1e7d3;
+  --muted-foreground: #6f6257;
+  --border: #e6d9c2;
+  --input: #d9ccb2;
+  --ring: #ae4a0b;
+  --primary: #ae4a0b;
+  --primary-foreground: #fff8ec;
+  --secondary: #f1e7d3;
+  --secondary-foreground: #7c3607;
+  --accent: #ebddc2;
+  --accent-foreground: #1c1611;
+  --destructive: #be3a22;
+  --destructive-foreground: #fff8ec;
+  --error: #f9e4dc;
+  --error-foreground: #96290f;
+  --info: #d9eae3;
+  --info-foreground: #0c5b50;
+  --success: #d9f0dc;
+  --success-foreground: #14662b;
+  --success-solid: #1e9e50;
+  --brand-green: #1e9e50;
+  --warning: #f9eacb;
+  --warning-foreground: #7e5200;
   --radius: 0.625rem;
 }
 
 .dark {
   color-scheme: dark;
-  --background: #09070f;
-  --foreground: #f7f5fc;
-  --card: #14101f;
-  --card-foreground: #f7f5fc;
-  --popover: #1a142e;
-  --popover-foreground: #f7f5fc;
-  --muted: #1e1832;
-  --muted-foreground: #a9a3ca;
-  --border: #26203a;
-  --input: #2e2648;
-  --ring: #b7a6f5;
-  --primary: #f7f5fc;
-  --primary-foreground: #09070f;
-  --secondary: #221b38;
-  --secondary-foreground: #e6defc;
-  --accent: #221b38;
-  --accent-foreground: #f7f5fc;
-  --destructive: #f04438;
-  --destructive-foreground: #ffffff;
-  --error: #3a1d22;
-  --error-foreground: #f5b8b8;
-  --info: #1b2a4d;
-  --info-foreground: #b9cdfb;
-  --success: #0f2e1d;
-  --success-foreground: #1fe865;
-  --success-solid: #1fe865;
-  --brand-green: #1fe865;
-  --warning: #3a2a12;
-  --warning-foreground: #f6cf7d;
+  --background: #14110c;
+  --foreground: #f4ede0;
+  --card: #1e1912;
+  --card-foreground: #f4ede0;
+  --popover: #251f15;
+  --popover-foreground: #f4ede0;
+  --muted: #292118;
+  --muted-foreground: #ab9c85;
+  --border: #352b1e;
+  --input: #3d3323;
+  --ring: #e8823a;
+  --primary: #f4ede0;
+  --primary-foreground: #1c1611;
+  --secondary: #292118;
+  --secondary-foreground: #edc892;
+  --accent: #2c2417;
+  --accent-foreground: #f4ede0;
+  --destructive: #e0573f;
+  --destructive-foreground: #fff8ec;
+  --error: #3a211a;
+  --error-foreground: #f2a894;
+  --info: #14332c;
+  --info-foreground: #8fd0c0;
+  --success: #122b19;
+  --success-foreground: #3ddc74;
+  --success-solid: #3ddc74;
+  --brand-green: #3ddc74;
+  --warning: #35260e;
+  --warning-foreground: #e8b45a;
 }
 
 * {
@@ -271,6 +271,422 @@ section[id] {
   animation: flow-fill 1.1s cubic-bezier(0.22, 1, 0.36, 1) 0.7s both;
 }
 
+/* ==========================================================================
+   LANDING SYSTEM — art-directed layer for the marketing page only.
+   Landing-scoped `--lm-*` tokens mirror the warm ember identity above.
+   Strict rule: no gradients anywhere — depth comes from solid surfaces,
+   hairline borders, shadows, opacity, and SVG textures (never CSS
+   gradients of any kind).
+   Palette: warm paper, warm ink, ember accent, deep teal, restrained
+   green reserved for fit signal.
+   ========================================================================== */
+
+:root {
+  --lm-paper: #faf6ee;
+  --lm-ink: #1c1611;
+  --lm-ember: #ae4a0b;
+  --lm-teal: #0c5b50;
+  --lm-gold: #c98a1b;
+  --lm-green: #1e9e50;
+  --lm-shell: #fffdf8;
+  --lm-shell-2: #f3e9d5;
+  --lm-line: #e6d9c2;
+  --lm-muted: #6f6257;
+  --lm-on-dark: #f7f1e3;
+  --lm-grain-opacity: 0.05;
+  --lm-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.dark {
+  --lm-paper: #14110c;
+  --lm-ink: #f4ede0;
+  --lm-ember: #e8823a;
+  --lm-teal: #6fb5a6;
+  --lm-gold: #d9a441;
+  --lm-green: #3ddc74;
+  --lm-shell: #1e1912;
+  --lm-shell-2: #292118;
+  --lm-line: #352b1e;
+  --lm-muted: #ab9c85;
+  --lm-on-dark: #f7f1e3;
+  --lm-grain-opacity: 0.07;
+}
+
+/* Landing surfaces: solid colors only. */
+.lm-paper {
+  background-color: var(--lm-paper);
+  color: var(--lm-ink);
+}
+
+.lm-shell {
+  background-color: var(--lm-shell);
+  border: 1px solid var(--lm-line);
+}
+
+.lm-shell-2 {
+  background-color: var(--lm-shell-2);
+  border: 1px solid var(--lm-line);
+}
+
+.lm-ink {
+  color: var(--lm-ink);
+}
+
+.lm-muted {
+  color: var(--lm-muted);
+}
+
+.lm-inkpanel {
+  background-color: #241a10;
+  color: var(--lm-on-dark);
+}
+
+.dark .lm-inkpanel {
+  background-color: #251d12;
+}
+
+.lm-shadow {
+  box-shadow:
+    0 1px 2px rgb(28 22 17 / 0.06),
+    0 12px 32px -12px rgb(92 51 8 / 0.16);
+}
+
+.dark .lm-shadow {
+  box-shadow:
+    0 1px 2px rgb(0 0 0 / 0.4),
+    0 20px 48px -16px rgb(0 0 0 / 0.55);
+}
+
+/* Editorial mono labels. */
+.lm-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--lm-ember);
+}
+
+.lm-index {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  color: var(--lm-muted);
+}
+
+/* Pipeline rails: thin full-bleed rules carrying travelling stage markers.
+   The markers loop left → right on long durations; rails + markers recede
+   on scroll via Motion transforms in Backdrop. */
+.lm-rail-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background-color: var(--lm-line);
+}
+
+@keyframes lm-travel {
+  from {
+    transform: translateX(-6vw);
+  }
+  to {
+    transform: translateX(106vw);
+  }
+}
+
+.lm-travel {
+  animation: lm-travel linear infinite;
+  animation-duration: var(--t, 30s);
+  animation-delay: var(--td, 0s);
+  will-change: transform;
+}
+
+/* Fine grain via SVG data-URI (no gradients). */
+.lm-grain {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
+}
+
+/* ---- Entrance choreography ---------------------------------------------
+   Every hero element carries `.lm` (timing) plus one motion class.
+   Staggering is driven by the `--d` custom property so the sequence is
+   declared in markup, runs in pure CSS (works even if JS animation
+   libs fail), and finishes in its natural state via `both`. */
+.lm {
+  animation-duration: 0.8s;
+  animation-timing-function: var(--lm-ease);
+  animation-fill-mode: both;
+  animation-delay: var(--d, 0ms);
+}
+
+@keyframes lm-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes lm-rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Headline lines: masked rise, 110% keeps descenders clipped mid-flight. */
+@keyframes lm-line {
+  from {
+    opacity: 0;
+    transform: translateY(110%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes lm-panel {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.972);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes lm-chip {
+  from {
+    opacity: 0;
+    transform: translateY(9px) scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes lm-nav {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Match meter: fills to the element's own --w. */
+@keyframes lm-fill {
+  from {
+    width: 3%;
+  }
+  to {
+    width: var(--w, 82%);
+  }
+}
+
+/* One-shot scan sweep inside the preview: a 1px solid rule. */
+@keyframes lm-scan {
+  0% {
+    opacity: 0;
+    transform: translateX(-8%) scaleX(0.2);
+  }
+  15% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(8%) scaleX(1);
+  }
+}
+
+.lm-fade {
+  animation-name: lm-fade;
+}
+
+.lm-rise {
+  animation-name: lm-rise;
+}
+
+.lm-mask {
+  overflow: hidden;
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+}
+
+.lm-mask > .lm-line {
+  display: block;
+  animation-name: lm-line;
+  animation-duration: 0.85s;
+  will-change: transform;
+}
+
+.lm-panel {
+  animation-name: lm-panel;
+  animation-duration: 0.9s;
+}
+
+.lm-chip {
+  animation-name: lm-chip;
+  animation-duration: 0.55s;
+}
+
+.lm-nav {
+  animation-name: lm-nav;
+  animation-duration: 0.6s;
+}
+
+.lm-fill {
+  animation: lm-fill 1.2s var(--lm-ease) both;
+  animation-delay: var(--d, 0ms);
+}
+
+.lm-scan {
+  animation: lm-scan 1.8s var(--lm-ease) both;
+  animation-delay: var(--d, 0ms);
+}
+
+/* Live status dot: gentle opacity pulse, solid color only. */
+@keyframes lm-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+.lm-pulse {
+  animation: lm-pulse 2.2s ease-in-out infinite;
+}
+
+/* Ambient drift for background plates: slow, small, transform-only. */
+@keyframes lm-drift-a {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(var(--rot, 0deg));
+  }
+  50% {
+    transform: translate3d(26px, -20px, 0) rotate(var(--rot, 0deg));
+  }
+}
+
+@keyframes lm-drift-b {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(var(--rot, 0deg));
+  }
+  50% {
+    transform: translate3d(-22px, 18px, 0) rotate(var(--rot, 0deg));
+  }
+}
+
+.lm-drift-a {
+  animation: lm-drift-a 14s ease-in-out infinite;
+  will-change: transform;
+}
+
+.lm-drift-b {
+  animation: lm-drift-b 18s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* Endpoint ticker: duplicated track loops seamlessly. */
+@keyframes lm-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.lm-marquee {
+  animation: lm-marquee 30s linear infinite;
+}
+
+/* Rotating headline word: quick masked swap, re-triggered by React key. */
+@keyframes lm-word {
+  from {
+    opacity: 0;
+    transform: translateY(60%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.lm-word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+
+.lm-word > span {
+  display: inline-block;
+  animation: lm-word 0.5s var(--lm-ease) both;
+}
+
+/* Scroll reveal scale variant (paired with Reveal variant="scale"). */
+.reveal-scale {
+  opacity: 0;
+  transform: translateY(14px) scale(0.985);
+  transition:
+    opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal-scale.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* How-it-works rail: progress line grows as steps reveal. */
+@keyframes lm-rail {
+  from {
+    transform: scaleX(0.04);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* Starts collapsed; the grow animation only runs once an ancestor Reveal
+   flips to .is-visible, so the rail draws itself as you arrive. */
+.lm-rail {
+  transform: scaleX(0.04);
+  transform-origin: left center;
+}
+
+.is-visible .lm-rail {
+  animation: lm-rail 1.1s var(--lm-ease) both;
+  animation-delay: var(--d, 120ms);
+}
+
+/* Interactive polish shared by landing controls. */
+.lm-press {
+  transition: transform 150ms var(--lm-ease);
+}
+
+.lm-press:active {
+  transform: scale(0.98);
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -281,14 +697,38 @@ section[id] {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
-  .reveal {
+  .reveal,
+  .reveal-scale {
     opacity: 1;
+    transform: none;
+  }
+  .lm-rail {
     transform: none;
   }
   .animate-enter,
   .animate-enter-preview,
   .tab-panel-enter,
-  .flow-bar {
+  .flow-bar,
+  .lm,
+  .lm-mask > .lm-line,
+  .lm-panel,
+  .lm-chip,
+  .lm-nav,
+  .lm-fill,
+  .lm-scan,
+  .lm-pulse,
+  .lm-drift-a,
+  .lm-drift-b,
+  .lm-marquee,
+  .lm-rail,
+  .lm-word > span {
     animation: none;
+  }
+  .lm-travel {
+    animation: none;
+    display: none;
+  }
+  .lm-marquee {
+    transform: none;
   }
 }

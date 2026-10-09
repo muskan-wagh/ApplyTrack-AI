@@ -5,15 +5,18 @@ import { cn } from '@/lib/utils';
  * Reveal-on-scroll wrapper. Adds `.is-visible` once the element enters the
  * viewport; the actual transition lives in CSS so `prefers-reduced-motion`
  * is honoured globally. Optional `delay` staggers siblings (ms).
+ * `variant="scale"` settles panels with a whisper of scale for depth.
  */
 export function Reveal({
   children,
   className,
   delay = 0,
+  variant = 'rise',
 }: {
   children: React.ReactNode;
   className?: string;
   delay?: number;
+  variant?: 'rise' | 'scale';
 }) {
   const ref = useRef<HTMLDivElement | null>(null);
   const [visible, setVisible] = useState(
@@ -40,7 +43,7 @@ export function Reveal({
     <div
       ref={ref}
       style={delay ? { transitionDelay: `${delay}ms` } : undefined}
-      className={cn('reveal', visible && 'is-visible', className)}
+      className={cn(variant === 'scale' ? 'reveal-scale' : 'reveal', visible && 'is-visible', className)}
     >
       {children}
     </div>
