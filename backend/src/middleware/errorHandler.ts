@@ -18,6 +18,20 @@ export function notFoundHandler(_req: Request, res: Response) {
 
 // Centralized error handler — never leak stack traces or secrets to clients.
 export function errorHandler(err: unknown, _req: Request, res: Response, _next: NextFunction) {
+  // express.json() body-parser failures arrive here as SyntaxError with
+  // `status`/`type` props. Without this branch they become a generic 500
+  // ("Internal Server Error"), which the frontend surfaces as a backend
+  // failure. Map them to actionable 4xx instead.
+  if (err instanceof SyntaxError && 'status' in err && 'body' in err) {
+    const status = (err as SyntaxError & { status?: number }).status ?? 400;
+    const type = (err as SyntaxError & { type?: string }).type ?? '';
+    if (type === 'entity.too.large' || status === 413) {
+      res.status(413).json({ ok: false, error: 'Request body is too large' });
+      return;
+    }
+    res.status(400).json({ ok: false, error: 'Invalid JSON payload' });
+    return;
+  }
   if (err instanceof AppError) {
     res.status(err.statusCode).json({ ok: false, error: err.message });
     return;

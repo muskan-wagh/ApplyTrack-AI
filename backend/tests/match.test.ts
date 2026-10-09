@@ -1,6 +1,8 @@
 import request from 'supertest';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { createApp } from '../src/app.js';
+import { env } from '../src/config/env.js';
+import { extractTextContent } from '../src/lib/match.js';
 
 const app = createApp();
 
@@ -17,6 +19,19 @@ function chatMock(content: string, status = 200) {
     vi.fn(async () =>
       new Response(JSON.stringify({ choices: [{ message: { content } }] }), { status })
     )
+  );
+}
+
+/** Queue one provider response per call, in order. */
+function chatSequence(bodies: unknown[], status = 200) {
+  let i = 0;
+  vi.stubGlobal(
+    'fetch',
+    vi.fn(async () => {
+      const body = bodies[Math.min(i, bodies.length - 1)];
+      i += 1;
+      return new Response(JSON.stringify(body), { status });
+    })
   );
 }
 
@@ -92,5 +107,113 @@ describe('POST /api/match scoring', () => {
       jobDescription: JD,
     });
     expect(res.status).toBe(502);
+  });
+
+  it('maps persistently empty provider content to 502 (no fake score)', async () => {
+    // Reasoning budget exhaustion / free-tier flake on every attempt.
+    chatSequence([
+      { choices: [{ message: { content: '' } }] },
+      { choices: [{ message: { content: '   ' } }] },
+    ]);
+    const res = await request(app).post('/api/match').send({
+      resumeText: RESUME,
+      jobDescription: JD,
+    });
+    expect(res.status).toBe(502);
+    expect(res.body.error).toMatch(/empty answer/i);
+    expect(res.body).not.toHaveProperty('data');
+  });
+
+  it('recovers when a single empty response is followed by valid JSON', async () => {
+    const valid = JSON.stringify({
+      score: 75,
+      matchedSkills: ['Node.js'],
+      missingSkills: ['Kubernetes'],
+      explanation: 'Good backend overlap after retry.',
+    });
+    chatSequence([
+      { choices: [{ message: { content: '' } }] },
+      { choices: [{ message: { content: valid } }] },
+    ]);
+    const res = await request(app).post('/api/match').send({
+      resumeText: RESUME,
+      jobDescription: JD,
+    });
+    expect(res.status).toBe(200);
+    expect(res.body.data.score).toBe(75);
+  });
+
+  it('parses content-blocks array responses', async () => {
+    const valid = JSON.stringify({
+      score: 68,
+      matchedSkills: ['Postgres'],
+      missingSkills: ['Kubernetes'],
+      explanation: 'Solid fit from block content.',
+    });
+    chatSequence([
+      { choices: [{ message: { content: [{ type: 'text', text: valid }] } }] },
+    ]);
+    const res = await request(app).post('/api/match').send({
+      resumeText: RESUME,
+      jobDescription: JD,
+    });
+    expect(res.status).toBe(200);
+    expect(res.body.data.score).toBe(68);
+  });
+
+  it('maps truncated JSON (finish-length cutoff) to 502, never a fake score', async () => {
+    chatMock('{"score": 92, "matchedSkills": ["Node.js",');
+    const res = await request(app).post('/api/match').send({
+      resumeText: RESUME,
+      jobDescription: JD,
+    });
+    expect(res.status).toBe(502);
+    expect(res.body).not.toHaveProperty('data');
+  });
+
+  it('returns 503 when the API key is missing', async () => {
+    const saved = env.OPENROUTER_API_KEY;
+    env.OPENROUTER_API_KEY = '';
+    try {
+      const res = await request(app).post('/api/match').send({
+        resumeText: RESUME,
+        jobDescription: JD,
+      });
+      expect(res.status).toBe(503);
+      expect(res.body.error).toMatch(/OPENROUTER_API_KEY/i);
+    } finally {
+      env.OPENROUTER_API_KEY = saved;
+    }
+  });
+
+  it('returns 503 on network failure', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async () => {
+        throw new Error('socket hang up');
+      })
+    );
+    const res = await request(app).post('/api/match').send({
+      resumeText: RESUME,
+      jobDescription: JD,
+    });
+    expect(res.status).toBe(503);
+  });
+});
+
+describe('extractTextContent', () => {
+  it('passes strings through', () => {
+    expect(extractTextContent('{"score": 1}')).toBe('{"score": 1}');
+  });
+
+  it('joins text content blocks', () => {
+    expect(
+      extractTextContent([{ type: 'text', text: '{"score": ' }, { type: 'text', text: '1}' }])
+    ).toBe('{"score": 1}');
+  });
+
+  it('returns empty string for null or non-text shapes', () => {
+    expect(extractTextContent(null)).toBe('');
+    expect(extractTextContent([{ type: 'image' }])).toBe('');
   });
 });

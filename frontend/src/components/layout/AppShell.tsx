@@ -1,12 +1,17 @@
 import { useState } from 'react';
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
-import { ArrowLeft, Briefcase, FileSearch, LayoutDashboard, Menu, Search, Sparkles, X } from 'lucide-react';
+import { ArrowLeft, Briefcase, FileSearch, LayoutDashboard, Menu, Plus, Search, Sparkles, X } from 'lucide-react';
+import { ApplicationForm } from '@/components/ApplicationForm';
 import { Logo } from '@/components/Logo';
 import { ProfileAvatar } from '@/components/ProfileAvatar';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
+
+export interface ShellContext {
+  onAdd: () => void;
+}
 
 const NAV = [
   { to: '/app', label: 'Overview', icon: LayoutDashboard, end: true },
@@ -36,14 +41,19 @@ const PAGE_META: Record<string, { title: string; description: string }> = {
 
 export function AppShell({ onSearch }: { onSearch: (q: string) => void }) {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [addOpen, setAddOpen] = useState(false);
   const location = useLocation();
   const meta = PAGE_META[location.pathname] ?? { title: 'ApplyTrack AI', description: '' };
   // The header search filters the applications table, so it only renders
   // on the page that consumes it — never as a decorative control.
   const showSearch = location.pathname === '/app/applications';
+  const openAdd = () => {
+    setMobileOpen(false);
+    setAddOpen(true);
+  };
 
   const nav = (
-    <nav aria-label="Primary" className="grid gap-0.5">
+    <nav aria-label="Primary" className="grid gap-1">
       {NAV.map((item) => (
         <NavLink
           key={item.to}
@@ -52,15 +62,32 @@ export function AppShell({ onSearch }: { onSearch: (q: string) => void }) {
           onClick={() => setMobileOpen(false)}
           className={({ isActive }) =>
             cn(
-              'flex items-center gap-2.5 rounded-md px-2.5 py-2 text-[13px] font-medium outline-none focus-visible:ring-2 focus-visible:ring-ring',
+              'group relative flex items-center gap-2.5 rounded-lg px-3 py-2 text-[13px] font-medium outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring',
               isActive
-                ? 'bg-accent text-accent-foreground'
-                : 'text-muted-foreground hover:bg-accent/60 hover:text-accent-foreground'
+                ? 'bg-secondary font-semibold text-foreground'
+                : 'text-muted-foreground hover:bg-accent hover:text-foreground'
             )
           }
         >
-          <item.icon className="h-4 w-4" aria-hidden />
-          {item.label}
+          {({ isActive }) => (
+            <>
+              <span
+                className={cn(
+                  'absolute left-0 top-1/2 h-5 w-1 -translate-y-1/2 rounded-full bg-primary transition-opacity',
+                  isActive ? 'opacity-100' : 'opacity-0'
+                )}
+                aria-hidden
+              />
+              <item.icon
+                className={cn(
+                  'h-4 w-4 shrink-0',
+                  isActive ? 'text-foreground' : 'text-muted-foreground group-hover:text-foreground'
+                )}
+                aria-hidden
+              />
+              {item.label}
+            </>
+          )}
         </NavLink>
       ))}
     </nav>
@@ -70,16 +97,29 @@ export function AppShell({ onSearch }: { onSearch: (q: string) => void }) {
     <div className="min-h-screen bg-background">
       {/* Desktop sidebar */}
       <aside className="fixed inset-y-0 left-0 hidden w-60 flex-col border-r bg-card md:flex">
-        <div className="px-4 pb-2 pt-4">
-          <Link to="/" aria-label="ApplyTrack AI home">
+        <div className="border-b px-4 py-4">
+          <Link to="/" aria-label="ApplyTrack AI home" className="rounded-md outline-none focus-visible:ring-2 focus-visible:ring-ring">
             <Logo />
           </Link>
+          <p className="mt-1.5 font-mono text-[11px] text-muted-foreground">
+            Job pipeline · AI career tools
+          </p>
         </div>
-        <div className="flex-1 overflow-y-auto px-3 py-3">{nav}</div>
-        <div className="border-t p-3">
+        <div className="flex-1 overflow-y-auto px-3 py-4">
+          <p className="eyebrow px-3 pb-2">Workspace</p>
+          {nav}
+        </div>
+        <div className="space-y-1 border-t p-3">
+          <div className="flex items-center gap-2.5 rounded-lg border bg-muted px-3 py-2.5">
+            <ProfileAvatar initials="AT" />
+            <div className="min-w-0">
+              <p className="truncate text-[13px] font-medium text-foreground">Personal</p>
+              <p className="font-mono text-[11px] text-muted-foreground">single-user · v1</p>
+            </div>
+          </div>
           <Link
             to="/"
-            className="flex items-center gap-2 rounded-md px-2.5 py-2 text-[13px] font-medium text-muted-foreground outline-none hover:bg-accent/60 hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring"
+            className="flex items-center gap-2 rounded-lg px-3 py-2 text-[13px] font-medium text-muted-foreground outline-none transition-colors hover:bg-accent hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
           >
             <ArrowLeft className="h-4 w-4" aria-hidden />
             Back to site
@@ -96,7 +136,7 @@ export function AppShell({ onSearch }: { onSearch: (q: string) => void }) {
             aria-hidden
           />
           <div className="absolute inset-y-0 left-0 flex w-72 flex-col border-r bg-card shadow-lg">
-            <div className="flex items-center justify-between p-4 pb-2">
+            <div className="flex items-center justify-between border-b p-4">
               <Logo />
               <Button
                 variant="ghost"
@@ -107,12 +147,19 @@ export function AppShell({ onSearch }: { onSearch: (q: string) => void }) {
                 <X className="h-4 w-4" />
               </Button>
             </div>
-            <div className="flex-1 overflow-y-auto px-3 py-2">{nav}</div>
+            <div className="flex-1 overflow-y-auto px-3 py-4">
+              <p className="eyebrow px-3 pb-2">Workspace</p>
+              {nav}
+              <Button onClick={openAdd} className="mt-4 w-full" size="sm">
+                <Plus className="h-4 w-4" aria-hidden />
+                Add application
+              </Button>
+            </div>
             <div className="border-t p-3">
               <Link
                 to="/"
                 onClick={() => setMobileOpen(false)}
-                className="flex items-center gap-2 rounded-md px-2.5 py-2 text-[13px] font-medium text-muted-foreground hover:bg-accent/60 hover:text-accent-foreground"
+                className="flex items-center gap-2 rounded-lg px-3 py-2 text-[13px] font-medium text-muted-foreground hover:bg-accent hover:text-foreground"
               >
                 <ArrowLeft className="h-4 w-4" aria-hidden />
                 Back to site
@@ -144,13 +191,30 @@ export function AppShell({ onSearch }: { onSearch: (q: string) => void }) {
                   <Input
                     placeholder="Search applications…"
                     aria-label="Search applications"
-                    className="pl-8"
+                    className="h-9 bg-card pl-8"
                     onChange={(e) => onSearch(e.target.value)}
                   />
                 </>
               )}
             </div>
-            <div className="ml-auto flex items-center gap-1">
+            {!showSearch && (
+              <p className="hidden font-mono text-xs text-muted-foreground sm:block" aria-hidden>
+                {meta.title}
+              </p>
+            )}
+            <div className="ml-auto flex items-center gap-1.5">
+              <Button onClick={openAdd} size="sm" className="hidden h-9 sm:inline-flex">
+                <Plus className="h-4 w-4" aria-hidden />
+                Add application
+              </Button>
+              <Button
+                onClick={openAdd}
+                size="icon"
+                className="h-9 w-9 sm:hidden"
+                aria-label="Add application"
+              >
+                <Plus className="h-4 w-4" aria-hidden />
+              </Button>
               <ThemeToggle />
               <ProfileAvatar initials="AT" />
             </div>
@@ -165,23 +229,18 @@ export function AppShell({ onSearch }: { onSearch: (q: string) => void }) {
                 <Input
                   placeholder="Search applications…"
                   aria-label="Search applications"
-                  className="pl-8"
+                  className="bg-card pl-8"
                   onChange={(e) => onSearch(e.target.value)}
                 />
               </div>
             </div>
           )}
         </header>
-        <main className="mx-auto max-w-5xl space-y-6 px-4 py-6 sm:px-6">
-          <div>
-            <h1 className="text-xl font-semibold tracking-tight text-foreground">{meta.title}</h1>
-            {meta.description && (
-              <p className="mt-0.5 text-sm text-muted-foreground">{meta.description}</p>
-            )}
-          </div>
-          <Outlet />
+        <main className="mx-auto max-w-6xl space-y-6 px-4 py-6 sm:px-6 lg:px-8">
+          <Outlet context={{ onAdd: openAdd } satisfies ShellContext} />
         </main>
       </div>
+      <ApplicationForm open={addOpen} onOpenChange={setAddOpen} initial={null} />
     </div>
   );
 }

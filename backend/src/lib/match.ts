@@ -6,6 +6,14 @@ import { matchResultSchema, type MatchResult } from '../schemas/match.js';
 const CHAT_URL = 'https://openrouter.ai/api/v1/chat/completions';
 const CHAT_TIMEOUT_MS = 60000;
 const MAX_RETRIES_429 = 2;
+// The configured chat model is a reasoning model: hidden reasoning tokens come
+// out of the same max_tokens budget (observed ~600-700 reasoning tokens per
+// match call). A small budget starves the visible answer, producing truncated
+// or empty content ("Match service returned an empty answer"). Size the budget
+// for reasoning + the JSON answer.
+const MAX_TOKENS = 2000;
+/** One retry when the provider returns 200 with empty content (free-tier flake). */
+const MAX_RETRIES_EMPTY = 1;
 // Bound prompt size — schemas already cap each side at 20k chars.
 const MAX_INPUT_CHARS = 12000;
 
@@ -51,6 +59,19 @@ interface ChatChoice {
   message?: { content?: unknown };
 }
 
+/** Provider content can be a string or content-blocks array; join text parts. */
+export function extractTextContent(content: unknown): string {
+  if (typeof content === 'string') return content;
+  if (Array.isArray(content)) {
+    return content
+      .map((b) =>
+        typeof b === 'string' ? b : typeof b?.text === 'string' ? b.text : ''
+      )
+      .join('');
+  }
+  return '';
+}
+
 /**
  * Score a pasted resume against a pasted job description via OpenRouter chat.
  * Throws 502/503 AppErrors on provider failures; never logs resume/JD text.
@@ -63,7 +84,7 @@ export async function generateMatchScore(
   const body = {
     model: env.RAG_CHAT_MODEL,
     temperature: 0.2,
-    max_tokens: 800,
+    max_tokens: MAX_TOKENS,
     messages: [
       { role: 'system', content: SYSTEM_PROMPT },
       {
@@ -74,6 +95,7 @@ export async function generateMatchScore(
     ],
   };
 
+  let emptyRetries = 0;
   let attempt = 0;
   for (;;) {
     let res: Response;
@@ -83,6 +105,11 @@ export async function generateMatchScore(
         headers: {
           Authorization: `Bearer ${apiKey}`,
           'Content-Type': 'application/json',
+          // OpenRouter recommended attribution headers. Some free-tier
+          // routes reject requests without a referer; these are static
+          // identifiers, never user data.
+          'HTTP-Referer': 'http://localhost:5173',
+          'X-Title': 'ApplyTrack AI Resume Match',
         },
         body: JSON.stringify(body),
         signal: AbortSignal.timeout(CHAT_TIMEOUT_MS),
@@ -115,10 +142,17 @@ export async function generateMatchScore(
       choices?: ChatChoice[];
     } | null;
     const content = parsed?.choices?.[0]?.message?.content;
-    if (typeof content !== 'string' || content.trim().length === 0) {
+    const text = extractTextContent(content);
+    if (text.trim().length === 0) {
+      // HTTP 200 with no visible text: reasoning consumed the budget or a
+      // transient free-tier flake. Retry once before surfacing 502.
+      if (emptyRetries < MAX_RETRIES_EMPTY) {
+        emptyRetries += 1;
+        continue;
+      }
       throw new AppError(502, 'Match service returned an empty answer');
     }
-    const json = extractJsonObject(content);
+    const json = extractJsonObject(text);
     const validated = matchResultSchema.safeParse(json);
     if (!validated.success) {
       throw new AppError(502, 'Match service returned an invalid analysis shape');

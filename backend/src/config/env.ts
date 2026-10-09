@@ -5,7 +5,11 @@ const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
   PORT: z.coerce.number().int().positive().default(5000),
   MONGODB_URI: z.string().min(1, 'MONGODB_URI is required'),
-  CORS_ORIGIN: z.string().default('http://localhost:5173'),
+  CORS_ORIGIN: z
+    .string()
+    .default(
+      'http://localhost:5173,http://127.0.0.1:5173,http://localhost:5174,http://127.0.0.1:5174'
+    ),
   // RAG (resume Q&A). OPENROUTER_API_KEY is optional at boot so existing
   // features keep working without AI credentials; RAG routes return 503
   // with a clear message when it is missing.

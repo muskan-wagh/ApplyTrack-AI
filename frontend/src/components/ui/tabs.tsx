@@ -93,7 +93,7 @@ export function TabsTrigger({
       tabIndex={selected ? 0 : -1}
       onClick={() => ctx.onValueChange(value)}
       className={cn(
-        'rounded-md px-3 py-1.5 text-sm font-medium outline-none focus-visible:ring-2 focus-visible:ring-ring',
+        'inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium outline-none focus-visible:ring-2 focus-visible:ring-ring',
         selected
           ? 'border bg-card text-foreground shadow-sm'
           : 'border border-transparent text-muted-foreground hover:text-foreground',

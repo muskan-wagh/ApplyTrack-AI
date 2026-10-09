@@ -28,8 +28,8 @@ export function ProfileAvatar({
         ) : null}
         <RadixFallback>{initials}</RadixFallback>
       </Avatar>
-      <AvatarRing className="ring-indigo-200" />
-      <AvatarIndicator className={online ? 'bg-emerald-500' : 'bg-slate-300'} />
+      <AvatarRing className="ring-border" />
+      <AvatarIndicator className={online ? 'bg-success-solid' : 'bg-muted-foreground/40'} />
     </AvatarExtended>
   );
 }

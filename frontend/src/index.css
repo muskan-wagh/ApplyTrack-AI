@@ -33,6 +33,8 @@
   --color-info-foreground: var(--info-foreground);
   --color-success: var(--success);
   --color-success-foreground: var(--success-foreground);
+  --color-success-solid: var(--success-solid);
+  --color-brand-green: var(--brand-green);
   --color-warning: var(--warning);
   --color-warning-foreground: var(--warning-foreground);
   --radius-lg: var(--radius);
@@ -42,65 +44,69 @@
 
 :root {
   color-scheme: light;
-  --background: oklch(0.985 0.002 247.8);
-  --foreground: oklch(0.21 0.034 264.7);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.21 0.034 264.7);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.21 0.034 264.7);
-  --muted: oklch(0.967 0.003 264.5);
-  --muted-foreground: oklch(0.551 0.023 264.5);
-  --border: oklch(0.928 0.006 264.5);
-  --input: oklch(0.9 0.008 264.5);
-  --ring: oklch(0.585 0.18 269.9);
-  --primary: oklch(0.55 0.19 269.9);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.955 0.004 264.5);
-  --secondary-foreground: oklch(0.3 0.03 264.7);
-  --accent: oklch(0.967 0.003 264.5);
-  --accent-foreground: oklch(0.21 0.034 264.7);
-  --destructive: oklch(0.577 0.245 27.3);
-  --destructive-foreground: oklch(0.985 0 0);
-  --error: oklch(0.94 0.03 27.3);
-  --error-foreground: oklch(0.45 0.18 27.3);
-  --info: var(--color-blue-100);
-  --info-foreground: var(--color-blue-900);
-  --success: var(--color-emerald-100);
-  --success-foreground: var(--color-emerald-900);
-  --warning: var(--color-amber-100);
-  --warning-foreground: var(--color-amber-900);
+  --background: #f7f5fc;
+  --foreground: #09070f;
+  --card: #ffffff;
+  --card-foreground: #09070f;
+  --popover: #ffffff;
+  --popover-foreground: #09070f;
+  --muted: #ede8f7;
+  --muted-foreground: #5f5b76;
+  --border: #e4def2;
+  --input: #ddd7ee;
+  --ring: #291451;
+  --primary: #291451;
+  --primary-foreground: #ffffff;
+  --secondary: #ede8f7;
+  --secondary-foreground: #291451;
+  --accent: #ede8f7;
+  --accent-foreground: #09070f;
+  --destructive: #c81e1e;
+  --destructive-foreground: #ffffff;
+  --error: #fdecec;
+  --error-foreground: #8a1f1f;
+  --info: #e3ecfd;
+  --info-foreground: #1e3f8f;
+  --success: #dbf7e3;
+  --success-foreground: #0a6b2a;
+  --success-solid: #12b76a;
+  --brand-green: #1fe865;
+  --warning: #fef0d5;
+  --warning-foreground: #7a4b00;
   --radius: 0.625rem;
 }
 
 .dark {
   color-scheme: dark;
-  --background: oklch(0.175 0.008 264.5);
-  --foreground: oklch(0.92 0.006 264.5);
-  --card: oklch(0.205 0.01 264.5);
-  --card-foreground: oklch(0.92 0.006 264.5);
-  --popover: oklch(0.22 0.011 264.5);
-  --popover-foreground: oklch(0.92 0.006 264.5);
-  --muted: oklch(0.245 0.011 264.5);
-  --muted-foreground: oklch(0.66 0.016 264.5);
-  --border: oklch(0.28 0.013 264.5);
-  --input: oklch(0.3 0.014 264.5);
-  --ring: oklch(0.7 0.15 269.9);
-  --primary: oklch(0.7 0.15 269.9);
-  --primary-foreground: oklch(0.18 0.02 269.9);
-  --secondary: oklch(0.26 0.012 264.5);
-  --secondary-foreground: oklch(0.88 0.008 264.5);
-  --accent: oklch(0.26 0.012 264.5);
-  --accent-foreground: oklch(0.92 0.006 264.5);
-  --destructive: oklch(0.62 0.2 27.3);
-  --destructive-foreground: oklch(0.97 0 0);
-  --error: oklch(0.3 0.08 27.3);
-  --error-foreground: oklch(0.85 0.08 27.3);
-  --info: oklch(0.3 0.07 250);
-  --info-foreground: oklch(0.82 0.07 250);
-  --success: oklch(0.28 0.07 160);
-  --success-foreground: oklch(0.85 0.07 160);
-  --warning: oklch(0.32 0.08 80);
-  --warning-foreground: oklch(0.87 0.08 80);
+  --background: #09070f;
+  --foreground: #f7f5fc;
+  --card: #14101f;
+  --card-foreground: #f7f5fc;
+  --popover: #1a142e;
+  --popover-foreground: #f7f5fc;
+  --muted: #1e1832;
+  --muted-foreground: #a9a3ca;
+  --border: #26203a;
+  --input: #2e2648;
+  --ring: #b7a6f5;
+  --primary: #f7f5fc;
+  --primary-foreground: #09070f;
+  --secondary: #221b38;
+  --secondary-foreground: #e6defc;
+  --accent: #221b38;
+  --accent-foreground: #f7f5fc;
+  --destructive: #f04438;
+  --destructive-foreground: #ffffff;
+  --error: #3a1d22;
+  --error-foreground: #f5b8b8;
+  --info: #1b2a4d;
+  --info-foreground: #b9cdfb;
+  --success: #0f2e1d;
+  --success-foreground: #1fe865;
+  --success-solid: #1fe865;
+  --brand-green: #1fe865;
+  --warning: #3a2a12;
+  --warning-foreground: #f6cf7d;
 }
 
 * {
@@ -178,6 +184,41 @@ section[id] {
 .reveal.is-visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* Dashboard design system: solid surfaces, hairline borders, restrained motion.
+   Strict rule: no gradients anywhere in the dashboard. Depth comes from
+   spacing, hairlines, and understated shadows. */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+
+.metric-value {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Subtle lift for interactive cards only */
+.card-interactive {
+  transition:
+    transform 150ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 150ms ease,
+    background-color 150ms ease;
+}
+.card-interactive:hover {
+  transform: translateY(-1px);
+  border-color: color-mix(in srgb, var(--ring) 35%, var(--border));
+}
+
+/* Refined focus ring for all interactive elements */
+:where(a, button, input, textarea, select, [tabindex]):focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
 }
 
 /* Hero flow bar: fills once on load to suggest analysis completing. */

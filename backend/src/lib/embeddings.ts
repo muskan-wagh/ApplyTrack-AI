@@ -61,6 +61,8 @@ async function postBatch(apiKey: string, model: string, batch: string[]): Promis
         headers: {
           Authorization: `Bearer ${apiKey}`,
           'Content-Type': 'application/json',
+          'HTTP-Referer': 'http://localhost:5173',
+          'X-Title': 'ApplyTrack AI Embeddings',
         },
         // Never log inputs: vectors only.
         body: JSON.stringify({ model, input: batch }),
