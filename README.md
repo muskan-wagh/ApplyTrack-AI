@@ -11,9 +11,7 @@ and ask questions over your uploaded resume with quoted evidence.
 
 ## Preview
 
-> Add your screenshot at `assets/project-screenshot.png` — it will render here.
-
-![ApplyTrack AI — project screenshot](assets/project-screenshot.png)
+![ApplyTrack AI — project screenshot](assets/photo.png)
 
 ## Overview
 
